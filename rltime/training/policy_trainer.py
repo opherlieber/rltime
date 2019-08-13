@@ -63,7 +63,7 @@ class PolicyTrainer():
         self.actors.set_actor_policy(self.policy)
         logging.getLogger().info(f"Training Policy:\n{self.policy}")
         policy_size = len(pickle.dumps(self.policy.get_state()))/1024./1024.
-        logging.getLogger().info("Policy Size: %.1fMB" % policy_size)
+        logging.getLogger().info("Policy Size: %.2fMB" % policy_size)
 
     def sync_target(self):
         """Syncs the target policy with the online policy"""
