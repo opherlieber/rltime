@@ -1,0 +1,5 @@
+[
+    {
+        "type" : "@python('rltime.env_wrappers.atari.wrap_atari')"
+    }
+]

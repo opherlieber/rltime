@@ -1,0 +1,11 @@
+{
+    "_comment" : "These are common config options for most cartpole runs. Increases max_episode_steps from 200->1000, uses a 2x64 layer FC model and disables CUDA which is usually faster for this model+env",
+    "model" : "@json('models/mlp_2x64.json')",
+    "env" : "CartPole-v0",
+    "env_args" : {
+        "max_episode_steps" : 1000
+    },
+    "policy_args" : {
+        "cuda" : false
+    }
+}

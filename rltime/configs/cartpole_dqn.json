@@ -1,0 +1,30 @@
+{
+    "acting" : {
+        "actor_envs" : 16,        
+        "exploration" : "@json('exploration/decay_0.01_50p.json')",        
+        "extra_args" : {"use_proc" : false}
+        
+    },
+    "**" : "@json('cartpole_common.json')",        
+    "training" : {
+        "type" : "dqn",
+        "args" : {
+            "gamma" : 0.99,
+            "mbatch_size" : 128,
+            "nstep_train" : 1,            
+            "nstep_target" : 10,
+            "target_update_freq" : 10000,
+            "lr" : 1e-3,
+            "lr_anneal" : true,       
+            "warmup_steps" : 20000,                 
+            "total_steps" : 500000,
+            "history_mode" : {
+                "type" : "replay",
+                "args" : {
+                    "size" : 10000,
+                    "train_frequency" : 4
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "_comment" : "A fully connected model with 2 hidden layers, each with 64 units",
+    "type" : "sequential",
+    "args" : {
+        "layer_configs": [
+            "@json('modules/fc64.json')",
+            "@json('modules/fc64.json')"
+        ]
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "_comment" : "The nature CNN conv-layer typically used in visual RL ENVs like atari",
+    "type" : "cnn",
+    "args" : {
+        "layers" : [
+            {"filters" : 32, "kernel" : 8, "stride" : 4},
+            {"filters" : 64, "kernel" : 4, "stride" : 2},
+            {"filters" : 64, "kernel" : 3, "stride" : 1}
+        ]
+    }
+}

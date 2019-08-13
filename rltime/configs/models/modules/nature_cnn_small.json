@@ -1,0 +1,10 @@
+{
+    "_comment" : "The reduced/smaller version of the nature CNN conv-layer",
+    "type" : "cnn",
+    "args" : {
+        "layers" : [
+            {"filters" : 16, "kernel" : 8, "stride" : 4},
+            {"filters" : 32, "kernel" : 4, "stride" : 2}     
+        ]
+    }
+}

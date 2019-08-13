@@ -1,0 +1,7 @@
+{
+    "_comment" : "A fully connected module with 64 hidden units",
+    "type" : "fc",
+    "args" : {
+        "fc_size" : 64
+    }
+}

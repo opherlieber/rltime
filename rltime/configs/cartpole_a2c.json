@@ -1,0 +1,18 @@
+{
+    "acting" : {
+        "actor_envs" : 16,        
+        "extra_args" : {"use_proc" : false}
+    },
+    "**" : "@json('cartpole_common.json')",        
+    "training" : {
+        "type" : "a2c",
+        "args" : {
+            "gamma" : 0.99,
+            "nstep_train" : 10,
+            "entropy_factor" : 1e-2,
+            "lr" : 1e-3,
+            "lr_anneal" : true,
+            "total_steps" : 500000
+        }
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "_comment" : "The nature-cnn model with an FC->LSTM->FC after the conv block",
+    "type" : "sequential",
+    "args" : {
+        "layer_configs": [
+            "@json('modules/nature_cnn.json')",
+            "@json('modules/fc512.json')",
+            "@json('modules/lstm512.json')",
+            "@json('modules/fc512.json')"
+        ]
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "_comment" : "The nature-cnn model with an LSTM layer between the CNN and FC layers",
+    "type" : "sequential",
+    "args" : {
+        "layer_configs": [
+            "@json('modules/nature_cnn.json')",
+            "@json('modules/lstm512.json')",
+            "@json('modules/fc512.json')"
+        ]
+    }
+}

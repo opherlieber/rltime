@@ -1,0 +1,10 @@
+{
+    "_comment" : "The basic nature-cnn model with the conv-layer followed by a fully connected 512 unit layer",
+    "type" : "sequential",
+    "args" : {
+        "layer_configs": [
+            "@json('modules/nature_cnn.json')",
+            "@json('modules/fc512.json')"
+        ]
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "acting" : {        
+        "actor_envs" : 16,        
+        "extra_args" : {"use_proc" : false}
+        
+    },
+    "**" : "@json('cartpole_common.json')",        
+    "training" : {
+        "type" : "ppo",
+        "args" : {
+            "gamma" : 0.99,
+            "nstep_train" : 32,
+            "entropy_factor" : 1e-2,
+            "lr" : 1e-3,
+            "lr_anneal" : true,
+            "clip_value" : 0.2,
+            "epochs" : 4,
+            "minibatches" : 4,
+            "advlam" : 0.95,
+            "vf_coef" : 0.5,
+            "total_steps" : 500000
+        }
+    }
+}

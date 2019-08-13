@@ -1,0 +1,11 @@
+{
+    "_comment" : "Fixed per-actor exploration rate as defined in the APEX paper, with base epsilon value of 0.4 and per-actor exponent factor of 7",
+    "type" : "epsilon_greedy",
+    "args" : {
+        "eps_start" : 0.4,
+        "eps_final" : 0.4,
+        "eps_min" : 0.001,
+        "per_actor_exponent_factor" : 7,
+        "exploration_fraction" : 1.0
+    }
+}

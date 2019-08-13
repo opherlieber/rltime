@@ -1,0 +1,13 @@
+[
+    {        
+        "type" : "@python('rltime.env_wrappers.atari.wrap_atari')",
+        "args" : {
+            "_comment" : "Don't frame stack when using LSTM. This reduces replay buffer overhead/size and GPU transfer times",
+            "stack" : 1
+        }
+    },
+    {
+        "_comment" : "For LSTM training we add also extra linear features for the LSTM (Last reward/action/timestep)",
+        "type" : "@python('rltime.env_wrappers.common.ExtraFeaturesEnvWrapper')"
+    }
+]

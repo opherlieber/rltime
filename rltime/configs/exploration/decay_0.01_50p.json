@@ -1,0 +1,9 @@
+{
+    "_comment" : "Epsilon greedy exploration decayed from 1.0->0.01 during 50 percent of the training period",
+    "type" : "epsilon_greedy",
+    "args" : {
+        "eps_start" : 1.0,
+        "eps_final" : 0.01,
+        "exploration_fraction" : 0.5
+    }    
+}
