@@ -15,8 +15,8 @@ class AsyncActor(Actor):
 
         Args:
             max_pending: Max amount of samples to accumulate until stopping.
-                For real-time ENVs this should be large enough to not stall
-                the acting between calls to get_samples(). For very fast
+                For slow real-time ENVs this should be large enough to not
+                stall the acting between calls to get_samples(). For very fast
                 ENVs this avoids an exploding amount of samples
             kwargs: Args for the actual Actor class
         """

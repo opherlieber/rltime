@@ -17,6 +17,13 @@ class PPO(A2C):
     using a single local vectorized actor
     """
     def _train(self, clip_value, clip_anneal=None, adv_norm=True, **kwargs):
+        """Entry point for PPO training
+
+        Args:
+            clip_value: The clip value to use in the PPO clipped surrogate loss
+            clip_anneal: Whether to anneal the clip_calue to 0 thoughout the
+                training (Can also be a specific value to anneal it to)
+        """
         self._clip_value = clip_value
         self._clip_anneal = clip_anneal
 

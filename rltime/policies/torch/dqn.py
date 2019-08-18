@@ -140,6 +140,8 @@ class DQNPolicy(TorchPolicy):
         qvalues = qvalues.data.cpu().numpy()
 
         # For DQN, actor action-selection is just argmax on the action qvalues
+        # We return the qvalues too though they aren't currently used but
+        # might be usefull for helping initialize replay priorities
         return {
             "actions": np.argmax(qvalues, axis=1),
             "qvalues": qvalues

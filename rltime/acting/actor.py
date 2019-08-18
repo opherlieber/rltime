@@ -147,8 +147,3 @@ class Actor(ActingInterface):
             self.last_state = states
 
         return samples
-
-
-
-
-

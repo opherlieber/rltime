@@ -13,11 +13,11 @@ def create_actors_from_config(env_creator, config):
     )
 
     # The base actor class to use, usually Actor by default but can choose a
-    # different one in the config
+    # different one in the config, for example AsyncActor
     actor_cls = config.get("actor_cls", Actor)
 
     if "pool" not in config:
-        # No actor-pool, just create a single vectorized actor
+        # No actor-pool, just create a single local vectorized actor
         return actor_cls(**actor_args)
     else:
         # Create a pool of actors

@@ -447,7 +447,7 @@ def make_env_creator(env_type, wrappers=[], imports=[],
             env = env_type(**kwargs)
         else:
             raise ValueError(
-                "make_env_creator() expected either a string or"
+                "make_env_creator() expected either a string or "
                 f"callable for 'env_type', got {type(env_type)}")
 
         if max_episode_steps is not None:
