@@ -1,0 +1,34 @@
+{    
+    "**" : "@json('atari_iqn_lstm.json')",
+    "env" : "FlappyBird-v0",
+    "env_args" : {
+        "imports" : ["gym_ple"],
+        "wrappers" : [
+            {
+                "_note": "Skip of 2 instead of 4 since it's 30FPS compared to 60FPS of ATARI",
+                "type" : "@python('rltime.env_wrappers.common.MaxAndSkipEnv')",
+                "args" : {
+                    "skip" : 2
+                }
+            },
+            {        
+                "type" : "@python('rltime.env_wrappers.common.wrap_visual')",
+                "args" : {
+                    "warp_size" : [80,120,3],
+                    "stack" : 1
+                }
+            },
+            {                    
+                "type" : "@python('rltime.env_wrappers.common.ExtraFeaturesEnvWrapper')"
+            }
+        ]
+        
+    },
+    "***" : {
+        "training" : {
+            "args" : {
+                "total_steps" : 5000000
+            }
+        }
+    }
+}
