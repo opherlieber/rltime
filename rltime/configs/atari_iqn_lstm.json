@@ -1,7 +1,7 @@
 {
     "acting" : {        
         "actor_envs" : 32,
-        "exploration" : "@json('exploration/decay_0.01_5p.json')",        
+        "exploration" : "@json('exploration/decay_0.01_5p.json')"       
     },
     "model" : "@json('models/nature_cnn_lstm512_fc512.json')",         
     "env_args" : {
