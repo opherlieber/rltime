@@ -1,8 +1,7 @@
 {
     "acting" : {        
         "actor_envs" : 32,
-        "exploration" : "@json('exploration/decay_0.01_5p.json')",
-        "_exploration" : "@json('exploration/per_actor_0.4_to_0.01_factor7.json')"
+        "exploration" : "@json('exploration/decay_0.01_5p.json')"       
     },
     "model" : "@json('models/nature_cnn_lstm512_fc512.json')",         
     "env_args" : {
@@ -12,8 +11,8 @@
     "policy_args" : {        
         "dueling" : true,
         "embedding_dim" : 64,
-        "num_sampling_quantiles" : 32,        
-        "injection_layer" : -1
+        "num_sampling_quantiles" : 8,
+        "injection_layer" : 1
     },
     "training" : {
         "type" : "iqn",
@@ -30,13 +29,13 @@
             "double_q" : true,
             "rnn_bootstrap" : true,
             "clip_grad" : 40.0,
-            "target_update_freq" : 10000,
+            "target_update_freq" : 20000,
             "total_steps" : 50000000,
             "warmup_steps" : 50000,
             "history_mode" : {
-                "type" : "replay",
+                "type" : "prioritized_replay",
                 "args" : {
-                    "size" : 500000,
+                    "size" : 1000000,
                     "train_frequency" : 4
                 }
             }     
