@@ -125,7 +125,7 @@ class SequentialModel(TorchModel):
         layers are recurrent"""
         return np.any([layer.is_recurrent() for layer in self.layers])
 
-    def make_state(self, x, initials):
+    def make_input_state(self, x, initials):
         """Makes the input state for the model
 
         The input state combines the input observation (x) with any
@@ -168,7 +168,7 @@ class SequentialModel(TorchModel):
         """ Performs the forward pass of the model
 
         Args:
-            inp: The input dictionary (Result of calling make_state())
+            inp: The input dictionary (Result of calling make_input_state())
             timesteps: The amount of timesteps in the batch layout (For RNN
                 usage). timesteps should be on the first dimension,
                 i.e. a (batch, ...) input would be viewable as:

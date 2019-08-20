@@ -40,7 +40,7 @@ class Policy:
         """Returns whether this policy has any recurrent layers"""
         raise NotImplementedError
 
-    def make_state(self, inp, initials):
+    def make_input_state(self, inp, initials):
         """Makes the model input state from the given input/observation
 
         Args:

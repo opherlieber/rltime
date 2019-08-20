@@ -84,7 +84,7 @@ class Actor(ActingInterface):
         self._actor_policy = actor_policy
 
         # Make the initial policy state
-        self.last_state = self._actor_policy.make_state(
+        self.last_state = self._actor_policy.make_input_state(
             self._vec_env.reset(), np.array([True]*self._num_envs))
 
     def close(self):
@@ -125,7 +125,7 @@ class Actor(ActingInterface):
             # The new state is a combination of the new observation as well as
             # any additional state information from the policy (For example
             # RNN hidden states for each RNN layer)
-            states = self._actor_policy.make_state(obs, np.array(dones))
+            states = self._actor_policy.make_input_state(obs, np.array(dones))
 
             # Although we did vectorized work above, the final samples need
             # to be singular so we split them

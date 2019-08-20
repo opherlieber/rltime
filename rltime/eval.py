@@ -107,7 +107,7 @@ def eval_policy(path, num_envs, episode_count, record=False, record_fps=60,
     print("Loaded checkpoint from step:", training_step)
 
     # The initial policy input state
-    state = policy.make_state(env.reset(), np.array([True] * num_envs))
+    state = policy.make_input_state(env.reset(), np.array([True] * num_envs))
 
     episodes_started = num_envs
     rewards = []
@@ -152,7 +152,7 @@ def eval_policy(path, num_envs, episode_count, record=False, record_fps=60,
                     time.sleep(diff)
             env.render()
         # Generate the next polict input state
-        state = policy.make_state(obs, dones)
+        state = policy.make_input_state(obs, dones)
 
     env.close()
 

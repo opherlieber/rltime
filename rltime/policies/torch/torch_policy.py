@@ -80,8 +80,8 @@ class TorchPolicy(nn.Module, Policy):
     def is_recurrent(self):
         return self.model.is_recurrent()
 
-    def make_state(self, inp, initials):
-        return self.model.make_state(inp, initials)
+    def make_input_state(self, inp, initials):
+        return self.model.make_input_state(inp, initials)
 
     def make_tensor(self, x, non_blocking=False):
         """Makes a tensor out of the given input, on the policies device"""
