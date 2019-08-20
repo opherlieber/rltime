@@ -5,7 +5,6 @@ import json
 import os
 import re
 import importlib
-from gym.wrappers.monitoring.video_recorder import ImageEncoder
 
 from .utils import import_by_full_name, deep_dictionary_update
 

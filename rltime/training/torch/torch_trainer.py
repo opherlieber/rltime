@@ -44,7 +44,7 @@ class TorchTrainer(MultiStepTrainer):
         super()._train(**kwargs)
 
     def _vf_scale(self, x):
-        """Performs value-function rescaling of the given value, if enabled"""
+        """Performs value-function scaling of the given value, if enabled"""
         if not self.vf_scale_epsilon:
             return x
         # Value function scaling as in the R2D2 paper
@@ -78,6 +78,7 @@ class TorchTrainer(MultiStepTrainer):
         return x.float()
 
     def train_init(self, lr):
+        """Init the training with given LR (Called after policy creation)"""
         self.optimizer = torch.optim.Adam(
             self.policy.parameters(), eps=self.adam_epsilon)
 

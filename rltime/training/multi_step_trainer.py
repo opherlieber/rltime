@@ -132,6 +132,7 @@ class MultiStepTrainer(PolicyTrainer):
 
     def _init_history_buffer(self, mode, async_history, nstep_target,
                              nstep_train, prefix_steps):
+        """Initialize the history buffer for the training session"""
         history_cls = get_registered_type("history", mode.get("type"))
         history_args = dict(
             **mode.get("args", {}), nstep_target=nstep_target,
@@ -174,7 +175,7 @@ class MultiStepTrainer(PolicyTrainer):
                 can be 'True' to anneal to zero or the value to anneal to
             epochs: Amount of 'mini-epochs'/iterations to perform on each
                 training batch (Relevant mainly for PPO)
-            minibatches: Split the training batch to this many samples and
+            minibatches: Split the training batch to this many parts and
                 train them one after the other (Relevant mainly for PPO)
             warmup_steps: Initial amount of steps to not train on, to allow
                 for example replay buffers to fill up a bit first
@@ -198,7 +199,7 @@ class MultiStepTrainer(PolicyTrainer):
                 nstep_train is 128 and rnn_steps_train is 32, we still train
                 all 128 steps, just any RNN in the model will treat it as 4x32
                 independent sequences
-            rnn_boostrap: Whether to use recurrent sequencing also for the
+            rnn_bootstrap: Whether to use recurrent sequencing also for the
                 bootstrap target value calculation. If False the RNN does not
                 do any sequencing, and each timestep is run through the RNN
                 with the state it had at acting time as a single timestep.

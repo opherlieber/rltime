@@ -5,7 +5,7 @@ from .config import ConfigException
 _template = {
     "acting": {
         "actor_envs": int,
-        "actor_cls": bool,
+        "actor_cls": object,
         "exploration": object,
         "extra_args": dict,
         "pool": {

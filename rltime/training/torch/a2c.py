@@ -66,7 +66,7 @@ class A2C(TorchTrainer):
         return discount
 
     def _discount_bootstrap_target_value(self, target_values, nsteps):
-        """Discount tge bootstrap value using GAE advlam (Equivalent to the
+        """Discount the bootstrap value using GAE advlam (Equivalent to the
         regular/base method if advlam=1.0)"""
         return (self.gamma**nsteps) * (self.advlam**(nsteps-1)) * target_values
 
