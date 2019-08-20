@@ -150,11 +150,12 @@ class PrioritizedReplayHistoryBuffer(ReplayHistoryBuffer):
         sample["env_buffer_offset"] = offset
 
         # Check if we can activate a new nstep_train sequence (Including
-        # having enough 'target steps' for the last transition)
+        # having enough 'target steps' for the last transition, and enough
+        # prefix steps before the sequence)
         base_sequence_offset = \
             (offset - self.nstep_train + 1 - self.nstep_target + 1)
         if (base_sequence_offset % self._gap == 0) and \
-                base_sequence_offset >= env_buffer_offset:
+                base_sequence_offset >= (env_buffer_offset+self.prefix_steps):
             # Get a free index to use as the prioritization index for this
             # new overlapped sequence
             idx = self._free_indexes.popleft()
@@ -208,11 +209,15 @@ class PrioritizedReplayHistoryBuffer(ReplayHistoryBuffer):
 
     def _sample_removed(self, sample):
         """Called when a sample is removed"""
-
-        # If this sample is the start of an overlapped sequence, we need
-        # to 'discard' this sequence from tracking
-        if sample['env_buffer_offset'] % self._gap == 0:
-            idx = sample['prioritization_index']
+        env_id = sample['env_id']
+        # If this sample removal breaks the ability to select an overlapped
+        # sequence we disable that sequence from being selected (We use the
+        # assumption that it's always the first sample in the env removed)
+        sequence_sample = self.buffer[env_id][self.prefix_steps]
+        if (sequence_sample['env_buffer_offset'] % self._gap == 0) and \
+                ('prioritization_index' in sequence_sample):
+            idx = sequence_sample['prioritization_index']
+            sequence_sample['prioritization_index'] = None
             # Ensure this idx can't be chosen or affect the min until it's
             # reused
             self._it_sum[idx] = 0
@@ -220,7 +225,7 @@ class PrioritizedReplayHistoryBuffer(ReplayHistoryBuffer):
                 self._it_min[idx] = np.inf
             self._free_indexes.append(idx)
             self._index_data[idx] = None
-        env_id = sample['env_id']
+
         assert(sample["env_buffer_offset"] == self._env_sample_offsets[env_id])
         self._env_sample_offsets[env_id] += 1
 
@@ -306,7 +311,7 @@ class PrioritizedReplayHistoryBuffer(ReplayHistoryBuffer):
             env_id = base_sample['env_id']
             base_offset = base_sample['env_buffer_offset']
             sample_index = base_offset - self._env_sample_offsets[env_id]
-            # Include burn-in timesteps in the train data
+            # Include requested burn-in/prefix timesteps in the train data
             sample_index -= self.prefix_steps
             assert(sample_index >= 0)
 
