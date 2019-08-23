@@ -203,6 +203,9 @@ class PolicyTrainer():
         self.value_log.log(
             'seconds', (end_time-self.ts_start), group="this_interval",
             precision=2)
+        self.value_log.log(
+            'seconds', (end_time-self.global_start), group="total",
+            precision=2)
         self.value_log.log('steps_acted', self.ts_steps, group="this_interval")
         self.value_log.log(
             'steps_acted', self.ts_steps, agg="sum", group="total", scope=None)
@@ -303,7 +306,7 @@ class PolicyTrainer():
         self.episode_history_windows = episode_history_windows
         self.log_freq = log_freq
         self.clip_rewards = clip_rewards
-        self.ts_start = time.time()
+        self.ts_start = self.global_start = time.time()
         self.steps = 0
         self.ts_steps = 0
         self.ts_steps_trained = 0
