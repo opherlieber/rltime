@@ -49,7 +49,7 @@ class PrioritizedReplayHistoryBuffer(ReplayHistoryBuffer):
             beta: Prioritized replay beta value to use for importance weights.
                 A value of 0 means uniform/no importance weights while 1 would
                 be the full importance weights (relative to the priorities)
-            beat_anneal: Whether to anneal the beta value to 1.0 across the
+            beta_anneal: Whether to anneal the beta value to 1.0 across the
                 training period (Can also be a specific value to anneal to)
             eps: Epsilon value to add to all base td-errors to
                 avoid 0-priorities causing INF importance weights
@@ -69,7 +69,7 @@ class PrioritizedReplayHistoryBuffer(ReplayHistoryBuffer):
                 any impact on learning the state representation)
                 Can also be negative, for example -1 means a full overlap
             max_weight_factor: Factor to use when calculating the weighted
-                priotity of an nstep_train sequence. The weighted priority
+                priority of an nstep_train sequence. The weighted priority
                 will be: <max_weight_factor*max+(1-max_weight_factor)*mean>
                 where max and mean are the max and mean of the td-errors/losses
                 of all transitions in the sequence.
