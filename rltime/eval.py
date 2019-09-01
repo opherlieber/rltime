@@ -111,6 +111,7 @@ def eval_policy(path, num_envs, episode_count, record=False, record_fps=60,
 
     episodes_started = num_envs
     rewards = []
+    lengths = []
     # This signifies the ENV started the episode in time and should be counted
     masks = [True] * num_envs
 
@@ -136,7 +137,9 @@ def eval_policy(path, num_envs, episode_count, record=False, record_fps=60,
                 if masks[i]:
                     # Only count the first 'episode_count' that started
                     reward = env_info['episode_info']['reward']
+                    length = env_info['episode_info']['length']
                     rewards.append(reward)
+                    lengths.append(length)
                     print(f"Episode {len(rewards)}/{episode_count} "
                           f"finished with reward: {reward}")
 
@@ -162,12 +165,14 @@ def eval_policy(path, num_envs, episode_count, record=False, record_fps=60,
         "date": datetime.datetime.now(),
         "episodes": episode_count,
         "envs": num_envs,
-        "reward": {
-            "mean": np.mean(rewards),
-            "min": np.min(rewards),
-            "max": np.max(rewards),
-            "median": np.median(rewards),
-            "std": np.std(rewards),
+        **{
+            key: {
+                "mean": np.mean(vals),
+                "min": np.min(vals),
+                "max": np.max(vals),
+                "median": np.median(vals),
+                "std": np.std(vals),
+            } for key, vals in [("reward", rewards), ("length", lengths)]
         }
     }
     print("Result:")
