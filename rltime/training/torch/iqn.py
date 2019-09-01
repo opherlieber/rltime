@@ -125,3 +125,5 @@ class IQN(DQN):
         self._report_losses_if_needed(losses_to_report, extra_data)
 
         self.value_log.log("qloss", loss.item(), group="train")
+        self.value_log.log(
+            "td_mean", sampled_td_errors.abs().mean().item(), group="train")
