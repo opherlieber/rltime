@@ -355,7 +355,7 @@ class EpisodeRecorder(gym.Wrapper):
 
         (Handles collisions with parallel ENVs)
         """
-        base_name = self.header + ("_" if self.header is not None else "")
+        base_name = self.header + "_" if self.header is not None else ""
         i = 0
         while True:
             try:
