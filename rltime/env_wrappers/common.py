@@ -8,6 +8,7 @@ import pathlib
 
 from rltime.general.backend import get_channel_axis
 from gym.wrappers.monitoring.video_recorder import ImageEncoder
+from gym.wrappers.time_limit import TimeLimit
 
 
 class EpisodeTracker(gym.Wrapper):
@@ -450,12 +451,15 @@ def make_env_creator(env_type, wrappers=[], imports=[],
                 "make_env_creator() expected either a string or "
                 f"callable for 'env_type', got {type(env_type)}")
 
+        # Limit the max steps per episode if requested
         if max_episode_steps is not None:
-            # TODO: This seems deprecated need to find a cleaner way (Also only
-            # works with GYM envs). There is the TimeLimit() option but that
-            # only allows to lower the max steps and not increase it
-            assert(isinstance(env_type, str))
-            env._max_episode_steps = max_episode_steps
+            if hasattr(env, "_max_episode_steps"):
+                # Use the '_max_episode_steps' if available from dym. This is
+                # to allow increasing the limit for example in cartpole.
+                # (The TimeLimit option can only decrease the limit)
+                env._max_episode_steps = max_episode_steps
+            else:
+                env = TimeLimit(env, max_episode_steps)
 
         # Always begin with EpisodeTracker so that the training gets the real
         # rewards/dones before any additional wrappers process them
