@@ -92,7 +92,7 @@ class LSTM(BaseModule):
 
             # Reset state to 0 on every 'initial' (i.e. on where a new episode
             # started mid-sequence)
-            initial = initial.unsqueeze(-1)
+            initial = initial.unsqueeze(-1)  # Broadcast to all state features
             hx = hx * (1 - initial)
             cx = cx * (1 - initial)
 

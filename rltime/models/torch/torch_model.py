@@ -64,5 +64,5 @@ class TorchModel(torch.nn.Module):
     def is_recurrent(self):
         raise NotImplementedError
 
-    def set_layer_preprocessor(self, layer_index, postprocessor):
+    def set_layer_preprocessor(self, layer_index, preprocessor):
         raise NotImplementedError
