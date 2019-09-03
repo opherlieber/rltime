@@ -1,33 +1,35 @@
-{    
+{
+    "_note": "PLE FlappyBird config, using atari_iqn_lstm as baseline configuration with [120,80,3] RGB observations (This also doesn't do frame-skipping as it trains better)",
     "**" : "@json('atari_iqn_lstm.json')",
     "env" : "FlappyBird-v0",
     "env_args" : {
         "imports" : ["gym_ple"],
+        "_note": "30 min time-limit at 30FPS",
+        "max_episode_steps": 54000,
         "wrappers" : [
             {
-                "_note": "Skip of 2 instead of 4 since it's 30FPS compared to 60FPS of ATARI",
-                "type" : "@python('rltime.env_wrappers.common.MaxAndSkipEnv')",
-                "args" : {
-                    "skip" : 2
-                }
-            },
-            {        
                 "type" : "@python('rltime.env_wrappers.common.wrap_visual')",
                 "args" : {
                     "warp_size" : [80,120,3],
                     "stack" : 1
                 }
             },
-            {                    
+            {
                 "type" : "@python('rltime.env_wrappers.common.ExtraFeaturesEnvWrapper')"
             }
         ]
-        
+
     },
     "***" : {
+        "_note": "Run only 5M steps and reduced replay buffer to 200K due to larger observation size",
         "training" : {
             "args" : {
-                "total_steps" : 5000000
+                "total_steps" : 5000000,
+                "history_mode" : {
+                    "args": {
+                        "size": 200000
+                    }
+                }
             }
         }
     }
