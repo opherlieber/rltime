@@ -1,0 +1,11 @@
+{
+    "_comment" : "Per-actor but base value decayed from 0.4->0.01 across 50% of the training period, with absolute minimum of 0.01",
+    "type" : "epsilon_greedy",
+    "args" : {
+        "eps_start" : 0.4,
+        "eps_final" : 0.01,
+        "eps_min" : 0.01,
+        "per_actor_exponent_factor" : 7,
+        "exploration_fraction" : 0.5
+    }
+}
