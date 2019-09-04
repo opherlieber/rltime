@@ -41,6 +41,7 @@ def eval_policy(path, num_envs, episode_count, record=False, record_fps=60,
     The result is logged to a new line in file 'eval.json' in <path>
 
     Args:
+        path: The path containing the training result output to evaluate
         num_envs: Amount of vectorized (sub-process) ENVs to evaluate in
             parallel
         episode_count: The amount of episodes to evaluate total
@@ -154,7 +155,7 @@ def eval_policy(path, num_envs, episode_count, record=False, record_fps=60,
                 if diff > 0:
                     time.sleep(diff)
             env.render()
-        # Generate the next polict input state
+        # Generate the next policy input state
         state = policy.make_input_state(obs, dones)
 
     env.close()
