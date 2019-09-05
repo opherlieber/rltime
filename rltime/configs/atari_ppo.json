@@ -1,11 +1,11 @@
 {
-    "acting" : {        
-        "actor_envs" : 16 
+    "acting" : {
+        "actor_envs" : 16
     },
-    "model" : "@json('models/nature_cnn_fc512.json')",  
+    "model" : "@json('models/nature_cnn_fc512.json')",
     "env_args" : {
-        "wrappers" : "@json('env_wrappers/atari.json')",
-    },    
+        "wrappers" : "@json('env_wrappers/atari.json')"
+    },
     "training" : {
         "type" : "ppo",
         "args" : {
@@ -14,7 +14,7 @@
             "nstep_train" : 128,
             "entropy_factor" : 1e-2,
             "lr" : 2.5e-4,
-            "lr_anneal" : true,            
+            "lr_anneal" : true,
             "clip_value" : 0.2,
             "clip_anneal" : true,
             "epochs" : 4,
@@ -22,7 +22,7 @@
             "advlam" : 0.95,
             "vf_coef" : 0.5,
             "clip_grad" : 0.5,
-            "total_steps" : 50000000            
+            "total_steps" : 50000000
         }
     }
 }
