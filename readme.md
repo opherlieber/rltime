@@ -1,5 +1,5 @@
 # Overview
-RLtime is a reinforcement learning library, currently supporting PyTorch, with focus on state-of-the-art q-learning algorithms and features. and interacting with real-time environments which require low-latency acting and sample-efficient training.
+RLtime is a reinforcement learning library, currently supporting PyTorch, with focus on state-of-the-art q-learning algorithms and features, and interacting with real-time environments which require low-latency acting and sample-efficient training.
 
 
 # Supported Policies and Features
