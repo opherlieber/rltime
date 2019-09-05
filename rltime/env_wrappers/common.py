@@ -288,7 +288,7 @@ class ExtraFeaturesEnvWrapper(gym.Wrapper):
                     (self.env.action_space.n,), dtype="float32")
                 action_vec[self._last_action] = 1
             else:
-                # Box-space, use the absolute aciton values reshaped to 1D
+                # Box-space, use the absolute action values reshaped to 1D
                 action_vec = self._last_action.reshape(-1)
             vals.append(action_vec)
 
@@ -454,7 +454,7 @@ def make_env_creator(env_type, wrappers=[], imports=[],
         # Limit the max steps per episode if requested
         if max_episode_steps is not None:
             if hasattr(env, "_max_episode_steps"):
-                # Use the '_max_episode_steps' if available from dym. This is
+                # Use the '_max_episode_steps' if available from gym. This is
                 # to allow increasing the limit for example in cartpole.
                 # (The TimeLimit option can only decrease the limit)
                 env._max_episode_steps = max_episode_steps
