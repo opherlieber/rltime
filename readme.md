@@ -24,6 +24,30 @@ features, in particular:
 
 All algorithms support recurrent models with dynamic model layout configuration using json files, with [extended syntax](https://github.com/opherlieber/rltime/blob/master/docs/json_syntax.md) for referencing/embedding other json files and python types.
 
+
+# Atari Results
+By extending IQN with an LSTM model as well as some rainbow and R2D2 features
+we can achieve state-of-the-art (in sample efficiency, 200M frames) results on
+many atari games:
+
+|Game|Rainbow|QR DQN|Imapala Deep|IQN|Recurrent IQN|
+|----|----|----|----|----|----|
+|Alien|9492|4871|15962|7022|**16920**|
+|Assault|14199|22012|19148|29091|**40874**|
+|Asterix|428200|261025|300732|342016|**572150**|
+|Beam Rider|16850|34821|32463|42776|**60867**|
+|Breakout|418|742|787|734|**810**|
+|Gravitar|1419|995|360|911|**3261**|
+|Ms. Pac-Man|5380|5821|**7342**|6349|7184|
+|Q*Bert|33818|**572510**|351200|25750|30463|
+|Seaquest|15899|8268|1753|**30140**|23938|
+|Space Invaders|18789|20972|43596|28888|**58154**|
+
+
+<sup>Rainbow/QR-DQN/Impala/IQN results are taken from the respective papers.</sup>
+
+A preliminary write-up with additional information and data for these results can be found [here](https://github.com/opherlieber/rltime/blob/master/docs/atari_iqn_lstm.md).
+
 # Installation
 ```bash
 git clone https://github.com/opherlieber/rltime.git
@@ -51,29 +75,6 @@ python -um rltime.eval <result_dir> --num-envs 32 --episodes 100
 # Evaluate a training result and render to the screen in real-time, 4 ENVs tiled
 python -um rltime.eval <result_dir> --num-envs 4 --episodes 10 --render
 ```
-
-# Atari Results
-By extending IQN with an LSTM model as well as some rainbow and R2D2 features
-we can achieve state-of-the-art (in sample efficiency, 200M frames) results on
-many atari games:
-
-|Game|Rainbow|QR DQN|Imapala Deep|IQN|Recurrent IQN|
-|----|----|----|----|----|----|
-|Alien|9492|4871|15962|7022|**16920**|
-|Assault|14199|22012|19148|29091|**40874**|
-|Asterix|428200|261025|300732|342016|**572150**|
-|Beam Rider|16850|34821|32463|42776|**60867**|
-|Breakout|418|742|787|734|**810**|
-|Gravitar|1419|995|360|911|**3261**|
-|Ms. Pac-Man|5380|5821|**7342**|6349|7184|
-|Q*Bert|33818|**572510**|351200|25750|30463|
-|Seaquest|15899|8268|1753|**30140**|23938|
-|Space Invaders|18789|20972|43596|28888|**58154**|
-
-
-<sup>Rainbow/QR-DQN/Impala/IQN results are taken from the respective papers.</sup>
-
-A preliminary write-up with additional information and data for these results can be found [here](https://github.com/opherlieber/rltime/blob/master/docs/atari_iqn_lstm.md).
 
 # Acting/Training
 The library implements a full separation between acting and training. Any
