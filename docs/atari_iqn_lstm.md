@@ -2,7 +2,7 @@
 ## Background
 I've recently been working on applying RL to modern games with visual inputs. These games typically require at least 2 dedicated CPU cores, and do not have emulation environments like the ALE which speed up the game, so each ENV runs very slowly in 'real time' at around 15 steps per second (60fps with a frame-skip of 4). Even if I could somehow get 256 distributed envs the acting throughput would still be too low to work well with distributed q-learning algorithms such as APEX and R2D2 without costing a huge amount of resources and time.
 
-The current state of the art in discrete action spaces is [R2D2](https://openreview.net/pdf?id=r1lyTjAqYX) which does very high-throughput distributed acting, using an LSTM model (with an LSTM layer between the CNN and FC layers of the classic DQN model). R2D2 essentially solves Atari games, reaching super-human on almost all of them. However it is not sample efficient, requiring billions of acting and training steps to reach these results, and falling short of other algorithms at the typical sample-efficient threshold of 200M (total) environment frames.
+The current state of the art in discrete action spaces is [R2D2](https://openreview.net/forum?id=r1lyTjAqYX) which does very high-throughput distributed acting, using an LSTM model (with an LSTM layer between the CNN and FC layers of the classic DQN model). R2D2 essentially solves Atari games, reaching super-human on almost all of them. However it is not sample efficient, requiring billions of acting and training steps to reach these results, and falling short of other algorithms at the typical sample-efficient threshold of 200M (total) environment frames.
 
 In the sample-efficient Atari domain we have:
 - [Rainbow](https://arxiv.org/abs/1710.02298) which combines 6 separate DQN improvements each contributing to the final performance.
@@ -10,7 +10,7 @@ In the sample-efficient Atari domain we have:
 - [Impala](https://arxiv.org/abs/1802.01561) (Deep Experts Variant) is a multi-actor distributed actor-critic algorithm with off-policy correction which achieves similar sample-efficient results at a very fast training rate, using a deeper and more complex model than the common Q-learning algorithms.
 
 ## Recurrent IQN
-Here, I propose a 'toned down' sample-efficient version of R2D2, using the same LSTM model, but combining it with IQN and additional rainbow and R2D2 features.
+Here, I propose a 'toned down' sample-efficient version of R2D2, using the same LSTM model, but combining it with IQN and additional rainbow and R2D2 features, which can achieve up to a ~50% improvement on the Atari-57 benchmark.
 
 Training is done on batch sizes of 32x20 (32 independent length-20 sequences), compared to the 64x80 used in R2D2. Acting is done on 32 vectorized ENVs, which along with the large batch size (20x larger than Rainbow/IQN which do 32x1 batches) can reach 200M (total) environment frames on Atari in less than a day on a single machine. This allows for quick experimentation and hyperparmameter tuning.
 
@@ -77,28 +77,105 @@ Additional features which gave mixed results and are not currently enabled:
 Full hyperparameters can be found in [this config file](https://github.com/opherlieber/rltime/blob/master/rltime/configs/atari_iqn_lstm.json) which can also be used to run these tests.
 
 ### Atari Results
+Following are results for the Atari-57 benchmark (Minus 2 games, 'Defender' and 'Surround', which are missing in Gym or didn't work for some reason, so 55 games overall)
+
+Recurrent IQN results are currently for a single run per game, and might change when averaging in additional seeds.
+
+#### Median Normalized Scores
+The median normalized score is a common metric for evaluating the overall performance of an RL algorithm. The normalized score for a game calculates how good the agents score is compared to a human player, relative to a random baseline score, and allows games with vastly different score ranges to be comparable. A normalized score of 100% means 'on par' with a human player. We then take the median normalized score across all games in the benchmark.
+
+|Algo|Median Normalized Score|
+|----|----|
+|Impala Deep|192%|
+|QR-DQN-1|211%|
+|IQN|218%|
+|Rainbow|230%|
+|Recurrent IQN|365%|
+
+<sup> Imapala/QR-DQN/IQN numbers are taken from the respective papers. Rainbow score is taken from the IQN paper which is improved from the 223% reported in the original Rainbow paper.
+
+
 #### Training Charts (Average reward of last 100 episodes)
 ![Charts](charts.png)
-#### Final Evaluation
+#### Raw Evaluation Scores
 Evaluation is done on the final policy with a fixed 0.001 exploration rate.
 
-|Game|Rainbow|QR DQN|Imapala Deep|IQN|Recurrent IQN|
+|Game|Rainbow|QR DQN|Impala Deep|IQN|Recurrent IQN|
 |----|----|----|----|----|----|
 |Alien|9492|4871|15962|7022|**16920**|
+|Amidar|**5131**|1641|1555|2946|3944|
 |Assault|14199|22012|19148|29091|**40874**|
 |Asterix|428200|261025|300732|342016|**572150**|
+|Asteroids|2713|4226|**108590**|2898|19432|
+|Atlantis|826660|971850|849968|978200|**1004353**|
+|Bank Heist|1358|1249|1223|1416|**1604**|
+|Battle Zone|62010|39268|20885|42244|**650900**|
 |Beam Rider|16850|34821|32463|42776|**60867**|
+|Berzerk|2546|3117|1853|1053|**6158**|
+|Bowling|30|77|60|**87**|30|
+|Boxing|**100**|**100**|**100**|**100**|**100**|
 |Breakout|418|742|787|734|**810**|
+|Centipede|8167|**12447**|11050|11561|9850|
+|Chopper Command|16654|14667|**28255**|16836|25720|
+|Crazy Climber|168789|161196|136950|179082|**334946**|
+|Defender|55105|47887|**185203**|53537|N/A|
+|Demon Attack|111185|121551|132827|128580|**167621**|
+|Double Dunk|0|22|0|6|**23**|
+|Enduro|2126|2355|0|**2359**|**2359**|
+|Fishing Derby|31|39|**45**|34|**45**|
+|Freeway|**34**|**34**|0|**34**|**34**|
+|Frostbite|9591|4384|318|4324|**25262**|
+|Gopher|70355|113585|66782|118365|**124282**|
 |Gravitar|1419|995|360|911|**3261**|
+|H.E.R.O.|**55887**|21395|33731|28386|28650|
+|Ice Hockey|1|-2|3|0|**43**|
+|James Bond|N/A|4703|602|**35108**|21686|
+|Kangaroo|14638|15356|1632|**15487**|14867|
+|Krull|8742|**11447**|8147|10707|10726|
+|Kung-Fu Master|52181|76642|43376|73512|**139177**|
+|Montezumas Revenge|**384**|0|0|0|0|
 |Ms. Pac-Man|5380|5821|**7342**|6349|7184|
+|Name This Game|13136|21890|21537|**22682**|20598|
+|Phoenix|108529|16585|210996|56599|**431765**|
+|Pitfall!|**0**|**0**|-2|**0**|**0**|
+|Pong|**21**|**21**|**21**|**21**|**21**|
+|Private Eye|**4234**|350|99|200|100|
 |Q*Bert|33818|**572510**|351200|25750|30463|
+|River Raid|N/A|17571|**29608**|17765|9860|
+|Road Runner|62041|64262|57121|57900|**537722**|
+|Robotank|61|59|13|63|**101**|
 |Seaquest|15899|8268|1753|**30140**|23938|
+|Skiing|-12958|-9324|-10180|**-9289**|-10250|
+|Solaris|3560|6740|2365|**8007**|2989|
 |Space Invaders|18789|20972|43596|28888|**58154**|
+|Star Gunner|127029|77495|200625|74677|**493299**|
+|Surround|**10**|8|8|9|N/A|
+|Tennis|0|**24**|1|**24**|-1|
+|Time Pilot|12926|10345|48482|12236|**56723**|
+|Tutankham|241|297|292|293|**301**|
+|Up and Down|N/A|71260|332547|88148|**426973**|
+|Venture|6|44|0|1318|**1723**|
+|Video Pinball|533937|705662|572898|698045|**888107**|
+|Wizard Of Wor|17863|25061|9158|**31190**|26402|
+|Yars Revenge|102557|26447|84231|28379|**127085**|
+|Zaxxon|22210|13112|32936|21772|**52074**|
 
 <sup>Rainbow/QR-DQN/Impala/IQN results are taken from the respective papers.</sup>
 
+[Spreadsheet with the scores](https://docs.google.com/spreadsheets/d/1J1INUtU8HmcaMtN48RYyQbLW6k2bBPykYjQvvpyniTg/edit?usp=sharing), including also random/human/DQN.
+
 Raw data for these results, including final checkpoint, tensorboard data and training/evaluation logs can be found [here](https://console.cloud.google.com/storage/browser/rltime_results/9a2ef8e/atari/). These can be evaluated/rendered/recorded locally using the evaluation options described in the [RLtime readme](https://github.com/opherlieber/rltime/blob/master/readme.md).
 
-These results are preliminary and may change when averaging in additional runs/seeds. More games will be added when available.
+These results are preliminary and may change when averaging in additional runs/seeds.
 
 
+## References
+[1] Will Dabney, et al. "[Implicit Quantile Networks for Distributional Reinforcement Learning](https://arxiv.org/abs/1806.06923)"
+
+[2] Matteo Hessel, et al. "[Rainbow: Combining Improvements in Deep Reinforcement Learning](https://arxiv.org/abs/1710.02298)"
+
+[3] Steven Kapturowski, et al. "[Recurrent Experience Replay in Distributed Reinforcement Learning](https://openreview.net/forum?id=r1lyTjAqYX)"
+
+[4] Lasse Espeholt, et al. "[IMPALA: Scalable Distributed Deep-RL with Importance Weighted Actor-Learner Architectures](https://arxiv.org/abs/1802.01561)"
+
+[5] Will Dabney, et al. "[Distributional Reinforcement Learning with Quantile Regression](https://arxiv.org/abs/1710.10044)"
