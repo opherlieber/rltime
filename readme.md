@@ -36,9 +36,11 @@ the Atari benchmark:
 |QR-DQN-1|211%|
 |IQN|218%|
 |Rainbow|230%|
-|Recurrent IQN|365%|
+|Recurrent IQN|365%<sup>*</sup>|
 
-A preliminary write-up with additional information and data for these results can be found [here](https://github.com/opherlieber/rltime/blob/master/docs/atari_iqn_lstm.md).
+<sup>* For 55 out of 57 Atari-57 games, single run per game</sup>
+
+A write-up with additional details and full results can be found [here](https://opherlieber.github.io/rl/2019/09/22/recurrent_iqn).
 
 # Installation
 ```bash
